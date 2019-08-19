@@ -14,12 +14,12 @@ export config_activa=$(gcloud config configurations list --filter="IS_ACTIVE=Tru
 export project=$(gcloud projects list --format 'value(PROJECT_ID)')
 ```
 
-## Guardamos email de nuevo usuario administrador en la variable admin
+## Guardamos email de usuario administrador en la variable admin
 ```bash
 export admin="admin1@instructor.ninja"
 ```
 
-## Guardamos email de nuevo usuario developer en la variable dev
+## Guardamos email de usuario developer en la variable dev
 ```bash
 export dev="dev1@instructor.ninja"
 ```
@@ -34,7 +34,7 @@ export cuentaDeServicio="cuenta-de-servicio"
 gcloud projects add-iam-policy-binding $project --member user:$admin --role roles/iam.serviceAccountAdmin
 ```
 
-## Cambiaremos a la configuración Administrador
+## Cambiaremos a configuración Administrador
 ```bash
 gcloud config configurations activate config-$project-admin
 ```
@@ -49,7 +49,7 @@ gcloud beta iam service-accounts create $cuentaDeServicio --description "Cuenta 
 gcloud beta iam service-accounts list
 ```
 
-## Damos Rol "Administrador de Objetos" a Cuenta de Servicio
+## Damos Rol "Administrador de Objetos de Almacenamiento" a Cuenta de Servicio
 ```bash
 gsutil iam ch serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.com:objectAdmin gs://bucket-$project
 ```
@@ -64,12 +64,12 @@ gcloud iam service-accounts add-iam-policy-binding $cuentaDeServicio@$project.ia
 gcloud iam service-accounts get-iam-policy $cuentaDeServicio@$project.iam.gserviceaccount.com
 ```
 
-## Instalar dependencias de "Storage" para Node.js
+## Instalar dependencias de "Google Storage" para Node.js
 ```bash
 npm install --save @google-cloud/storage
 ```
 
-## Generar llaves
+## Generar llaves de Cuenta de Servicio (para usar las credenciales de Aplicación)
 ```bash
 gcloud iam service-accounts keys create llaves.json --iam-account $cuentaDeServicio@$project.iam.gserviceaccount.com
 ```
@@ -79,7 +79,7 @@ gcloud iam service-accounts keys create llaves.json --iam-account $cuentaDeServi
 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/llaves.json
 ```
 
-## Ejecutamos
+## Ejecutamos programa de ejemplo para listar archivos
 ```bash
 node -e 'require("./index.js").listaArchivos()'
 ```
