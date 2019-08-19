@@ -38,6 +38,14 @@ gcloud projects add-iam-policy-binding $project --member user:$admin --role role
 ```
 
 ## Cambiaremos a configuración Administrador
+
+### Comprobamos la existencia de la configuracion "admin"
+```bash
+gcloud config configurations list
+```
+Si la configuración existe, cambiamos usando siguiente:
+
+### Cambio de configuración
 ```bash
 gcloud config configurations activate config-$project-admin
 ```
