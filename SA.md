@@ -2,6 +2,9 @@
 
 ## En este laboratorio revisaremos:
 1) Como crear una cuenta de servicio
+2) Permisos para administrar y ejecutar una cuenta de servicio (como recurso)
+3) Permisos para una cuenta de servicio (como usuario)
+4) Ejecutar una aplicación usando una cuenta de servicio
 
 
 ## Obtener nombre de la configuración activa (y guardamos en variable config_activa)
@@ -96,7 +99,26 @@ gsutil iam get gs://bucket-$project
 
 ## Damos Rol "Administrador de Objetos" a Cuenta de Servicio
 ```bash
-gsutil iam ch -d serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.com:objectAdmin gs://bucket-$project
+gsutil iam ch serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.com:objectAdmin gs://bucket-$project
+```
+
+## Quitamos Rol "Visualizador de Proyecto" a Developer
+```bash
+gcloud projects add-iam-policy-binding $project --member user:$dev --role roles/viewer
+```
+
+## Quitamos Rol "Administrador de Objetos" a Developer
+```bash
+gsutil iam ch -d user:$dev:objectCreator gs://bucket-$project
+```
+
+## Obtener politica del Bucket, actualziada.
+```bash
+gsutil iam get gs://bucket-$project
+```
+## Listaremos el contenido del bucket
+```bash
+gsutil ls gs://bucket-$project
 ```
 
 ## Ejecutamos
