@@ -28,6 +28,11 @@ export dev="dev1@instructor.ninja"
 export cuentaDeServicio="cuenta-de-servicio"
 ```
 
+### Paso 5 - Asignamos proyecto a configuración actual
+```bash
+gcloud config set project $project
+```
+
 ## Cambiaremos a configuración Developer (2 ó 4 pasos)
 
 ### Paso 1 - Comprobamos la existencia de la configuracion "developer"
