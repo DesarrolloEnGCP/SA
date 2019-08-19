@@ -45,9 +45,25 @@ gcloud config configurations list
 ```
 Si la configuración existe, cambiamos usando siguiente:
 
-### Cambio de configuración
+### Cambio de configuración (Si Existe)
 ```bash
 gcloud config configurations activate config-$project-admin
+```
+### Creamos configuración (Si NO Existe)
+```bash
+gcloud config configurations create config-$project-admin
+```
+**Asignaremos el proyecto a la configuracion activa (admin)**
+```bash
+gcloud config set project $project
+```
+**Damos acceso "Editor de Proyecto" a usuario Administrador**
+```bash
+gcloud projects add-iam-policy-binding $project --member user:$admin --role roles/editor
+```
+**Autenticarse (cambiaremos de usuario al nuevo administrador)**
+```bash
+gcloud auth login
 ```
 
 ## Crear cuenta de servicio
