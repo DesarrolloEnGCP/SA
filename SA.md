@@ -113,6 +113,11 @@ gsutil iam ch -d serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.c
 gsutil iam get gs://bucket-$project
 ```
 
+## Ejecutamos programa de ejemplo para listar archivos
+```bash
+node -e 'require("./index.js").listaArchivos()'
+```
+
 ## Damos Rol "Administrador de Objetos" a Cuenta de Servicio
 ```bash
 gsutil iam ch serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.com:objectAdmin gs://bucket-$project
@@ -120,7 +125,7 @@ gsutil iam ch serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.com:
 
 ## Quitamos Rol "Visualizador de Proyecto" a Developer
 ```bash
-gcloud projects add-iam-policy-binding $project --member user:$dev --role roles/viewer
+gcloud projects remove-iam-policy-binding $project --member user:$dev --role roles/viewer
 ```
 
 ## Quitamos Rol "Administrador de Objetos" a Developer
@@ -132,6 +137,17 @@ gsutil iam ch -d user:$dev:objectCreator gs://bucket-$project
 ```bash
 gsutil iam get gs://bucket-$project
 ```
+
+## Listaremos el contenido del bucket
+```bash
+gsutil ls gs://bucket-$project
+```
+
+## Cambiaremos a la configuración Developer
+```bash
+gcloud config configurations activate config-$project-dev
+```
+
 ## Listaremos el contenido del bucket
 ```bash
 gsutil ls gs://bucket-$project
