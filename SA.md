@@ -17,11 +17,6 @@ export config_activa=$(gcloud config configurations list --filter="IS_ACTIVE=Tru
 export project=$(gcloud projects list --format 'value(PROJECT_ID)')
 ```
 
-## Guardamos email de usuario administrador en la variable admin
-```bash
-export admin="admin1@instructor.ninja"
-```
-
 ## Guardamos email de usuario developer en la variable dev
 ```bash
 export dev="dev1@instructor.ninja"
@@ -32,14 +27,9 @@ export dev="dev1@instructor.ninja"
 export cuentaDeServicio="cuenta-de-servicio"
 ```
 
-## Damos Rol de "Service Accounts Admin" a usuario Admin
-```bash
-gcloud projects add-iam-policy-binding $project --member user:$admin --role roles/iam.serviceAccountAdmin
-```
+## Cambiaremos a configuración Developer
 
-## Cambiaremos a configuración Administrador
-
-### Comprobamos la existencia de la configuracion "admin"
+### Comprobamos la existencia de la configuracion "developer"
 ```bash
 gcloud config configurations list
 ```
@@ -47,23 +37,25 @@ Si la configuración existe, cambiamos usando siguiente:
 
 ### Cambio de configuración (Si Existe)
 ```bash
-gcloud config configurations activate config-$project-admin
+gcloud config configurations activate config-$project-dev
 ```
 ### Creamos configuración (Si NO Existe)
 ```bash
-gcloud config configurations create config-$project-admin
+gcloud config configurations create config-$project-dev
 ```
-**Asignaremos el proyecto a la configuracion activa (admin)**
+**Asignaremos el proyecto a la configuracion activa (developer)**
 ```bash
 gcloud config set project $project
 ```
-**Damos acceso "Editor de Proyecto" a usuario Administrador**
-```bash
-gcloud projects add-iam-policy-binding $project --member user:$admin --role roles/editor
-```
-**Autenticarse (cambiaremos de usuario al nuevo administrador)**
+
+**Autenticarse (cambiaremos de usuario al nuevo developer)**
 ```bash
 gcloud auth login
+```
+
+### Volvemos a configuración activa (inicial)
+```bash
+gcloud config configurations activate $config_activa
 ```
 
 ## Crear cuenta de servicio
