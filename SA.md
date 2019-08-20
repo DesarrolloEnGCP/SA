@@ -33,6 +33,11 @@ export cuentaDeServicio="cuenta-de-servicio"
 gcloud config set project $project
 ```
 
+### Paso 6 - Revisamos variables
+```bash
+echo Proyecto: $project, cuenta de servicio: $cuentaDeServicio, email developer: $dev, configuracion activa: $config_activa
+```
+
 ## Cambiaremos a configuración Developer (2 ó 4 pasos)
 
 ### Paso 1 - Comprobamos la existencia de la configuracion "developer"
@@ -59,57 +64,70 @@ gcloud config set project $project
 gcloud auth login
 ```
 
-### Paso 2.1.3 Volvemos a configuración activa (inicial)
+## Crear cuenta de servicio (5 pasos)
+
+### Paso 1 - Volvemos a configuración activa (inicial)
 ```bash
 gcloud config configurations activate $config_activa
 ```
-
-## Crear cuenta de servicio (4 pasos)
+### Paso 2 - Crear cuenta de servicio
 ```bash
 gcloud beta iam service-accounts create $cuentaDeServicio --description "Cuenta de Servicio" --display-name "sa"
 ```
 
-### Paso 1 - Ver lista de servicios
+### Paso 3 - Ver lista de servicios
 ```bash
 gcloud beta iam service-accounts list
 ```
 
-### Paso 2 - Damos Rol "Administrador de Objetos de Almacenamiento" a Cuenta de Servicio
+### Paso 4 - Damos Rol "Administrador de Objetos de Almacenamiento" a Cuenta de Servicio
 ```bash
 gsutil iam ch serviceAccount:$cuentaDeServicio@$project.iam.gserviceaccount.com:objectAdmin gs://bucket-$project
 ```
 
-### Paso 3 - Damos Rol "Usuario de Cuentas de Servicios" al Developer
+### Paso 5 - Obtener politica del Bucket
+```bash
+gsutil iam get gs://bucket-$project
+```
+
+## Ejecutar Aplicacion usando la Cuenta de Servicio (6 pasos)
+
+
+## Paso 1 - Cambiaremos a la configuración Developer
+```bash
+gcloud config configurations activate config-$project-dev
+```
+
+### Paso 2 - Damos Rol "Usuario de Cuentas de Servicios" al Developer
 ```bash
 gcloud iam service-accounts add-iam-policy-binding $cuentaDeServicio@$project.iam.gserviceaccount.com --member=user:$dev --role='roles/iam.serviceAccountUser'
 ```
 
-### Paso 4 - Ver Roles de la Cuenta de Servicio (Veremos al Developer)
+### Paso 3 - Ver Roles de la Cuenta de Servicio (Veremos al Developer)
 ```bash
 gcloud iam service-accounts get-iam-policy $cuentaDeServicio@$project.iam.gserviceaccount.com
 ```
 
-## Ejecutar Aplicacion usando la Cuenta de Servicio (4 pasos)
-
-### Paso 1 - Instalar dependencias de "Google Storage" para Node.js
+### Paso 4 - Instalar dependencias de "Google Storage" para Node.js
 ```bash
 npm install --save @google-cloud/storage
 ```
 
-### Paso 2 - Generar llaves de Cuenta de Servicio (para usar las credenciales de Aplicación)
+### Paso 5 - Generar llaves de Cuenta de Servicio (para usar las credenciales de Aplicación)
 ```bash
 gcloud iam service-accounts keys create llaves.json --iam-account $cuentaDeServicio@$project.iam.gserviceaccount.com
 ```
 
-### Paso 3 - Guardamos variable de credenciales de aplicación
+### Paso 6 - Guardamos variable de credenciales de aplicación
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/llaves.json
 ```
 
-### Paso 4 - Ejecutamos programa de ejemplo para listar archivos
+### Paso 7 - Ejecutamos programa de ejemplo para listar archivos
 ```bash
 node -e 'require("./index.js").listaArchivos()'
 ```
+
 ## Prueba de Roles y Permisos para la cuenta de Servicio (4 pasos)
 
 ### Paso 1 - Quitamos Rol "Administrador de Objetos" a Cuenta de Servicio
