@@ -92,7 +92,7 @@ gsutil iam get gs://bucket-$project
 
 ## Ejecutar Aplicacion usando la Cuenta de Servicio (6 pasos)
 
-## Paso 1 - Cambiaremos a la configuración Developer
+### Paso 1 - Cambiaremos a la configuración Developer
 ```bash
 gcloud config configurations activate config-$project-dev
 ```
