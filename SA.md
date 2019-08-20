@@ -92,19 +92,19 @@ gsutil iam get gs://bucket-$project
 
 ## Ejecutar Aplicacion usando la Cuenta de Servicio (6 pasos)
 
-### Paso 1 - Cambiaremos a la configuración Developer
-```bash
-gcloud config configurations activate config-$project-dev
-```
-
-### Paso 2 - Damos Rol "Usuario de Cuentas de Servicios" al Developer
+### Paso 1 - Damos Rol "Usuario de Cuentas de Servicios" al Developer
 ```bash
 gcloud iam service-accounts add-iam-policy-binding $cuentaDeServicio@$project.iam.gserviceaccount.com --member=user:$dev --role='roles/iam.serviceAccountUser'
 ```
 
-### Paso 3 - Ver Roles de la Cuenta de Servicio (Veremos al Developer)
+### Paso 2 - Ver Roles de la Cuenta de Servicio (Veremos al Developer)
 ```bash
 gcloud iam service-accounts get-iam-policy $cuentaDeServicio@$project.iam.gserviceaccount.com
+```
+
+### Paso 3 - Cambiaremos a la configuración Developer
+```bash
+gcloud config configurations activate config-$project-dev
 ```
 
 ### Paso 4 - Instalar dependencias de "Google Storage" para Node.js
